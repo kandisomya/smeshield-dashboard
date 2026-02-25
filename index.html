@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SME Shield Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <div class="logo-area">
+      <h1>🛡️ SME Shield</h1>
+      <span class="badge">Enterprise Security</span>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" onclick="simulateAttack()">
+        Simulate Attack
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    <section class="stats-grid">
+      <div class="stat-card">
+        <label>Total Devices</label>
+        <div class="value" id="devices">24</div>
+      </div>
+      <div class="stat-card">
+        <label>Active Users</label>
+        <div class="value" id="users">13</div>
+      </div>
+      <div class="stat-card">
+        <label>Threats Detected</label>
+        <div class="value" id="threatCount">0</div>
+      </div>
+      <div class="stat-card">
+        <label>Risk Level</label>
+        <div class="value status-text low" id="riskLevel">LOW</div>
+      </div>
+    </section>
+
+    <section class="glass-panel pipeline-section">
+      <h2>Detection Pipeline</h2>
+      <div class="pipeline-flow">
+        <div class="step" id="step1">Data Collection</div>
+        <div class="step" id="step2">Preprocessing</div>
+        <div class="step" id="step3">Rule Engine</div>
+        <div class="step" id="step4">ML Detection</div>
+        <div class="step" id="step5">UEBA</div>
+        <div class="step" id="step6">Risk Score</div>
+        <div class="step" id="step7">Auto Response</div>
+      </div>
+    </section>
+
+    <div class="middle-row">
+      <section class="glass-panel gauge-container">
+        <h3>System Risk Score</h3>
+        <div class="gauge-wrapper">
+          <canvas id="riskGauge"></canvas>
+          <div class="gauge-center-text">
+            <span id="riskPercent">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass-panel metrics-container">
+        <h3>Performance Metrics</h3>
+        <div class="metric-row">
+          <div class="metric-item">
+            <span class="label">MTTD (Mean Time to Detect)</span>
+            <span class="time-val"><span id="mttd">0</span>s</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">MTTC (Mean Time to Contain)</span>
+            <span class="time-val"><span id="mttc">0</span>s</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="bottom-row">
+      <section class="glass-panel devices-table">
+        <h3>Device Risk Status</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Device</th>
+                <th>User</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="deviceTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="alerts-col">
+        <section class="glass-panel incident-panel">
+          <h3>Incident Response</h3>
+          <div id="incidentBox" class="empty-state">No incidents detected.</div>
+        </section>
+
+        <section class="glass-panel logs-panel">
+          <h3>Live Logs</h3>
+          <ul id="logStream" class="mono-font"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+<footer class="glass-panel main-footer">
+    <div class="footer-left">
+      <span class="status-indicator"></span>
+      <span class="status-text">System Status: <strong class="low">Operational</strong></span>
+    </div>
+    <div class="footer-center">
+      <span class="copyright">&copy; 2026 SME Shield Security. All rights reserved.</span>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
