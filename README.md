@@ -38,29 +38,9 @@ The platform visualizes a comprehensive 7-stage security logic:
 
 ---
 
-## ⚙️ Installation & Setup
-
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/your-username/sme-shield.git](https://github.com/your-username/sme-shield.git)
-    ```
-2.  **Navigate to the project folder**
-    ```bash
-    cd sme-shield
-    ```
-3.  **Launch the Dashboard**
-    Simply open `index.html` in your preferred web browser.
-
----
-
 ## 🛡️ Usage
 
 To see the security architecture in action:
 1.  Navigate to the **Detection Pipeline** section.
 2.  Click the **"Simulate Attack"** button.
 3.  Observe how the logs stream through the seven layers and how the **Risk Level** and **MTTD** (Mean Time to Detect) metrics update dynamically.
-
----
-
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
