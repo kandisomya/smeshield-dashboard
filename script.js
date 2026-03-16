@@ -1,5 +1,5 @@
 /* SME Shield Dashboard - Logic & Simulation */
-
+ 
 // 1. SCENARIOS & DATA
 const scenarios = [
   { name:"Ransomware", user:"rahul@company.com", device:"FINANCE-PC-07",
