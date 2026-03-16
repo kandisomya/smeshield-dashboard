@@ -1,3 +1,6 @@
+/* SME Shield Dashboard - Logic & Simulation */
+
+// 1. SCENARIOS & DATA
 const scenarios = [
   { name:"Ransomware", user:"rahul@company.com", device:"FINANCE-PC-07",
     logs:["Mass file encryption detected","Shadow copy deletion attempt","500+ files modified"],
@@ -29,14 +32,53 @@ let totalDetectTime = 0;
 let totalContainTime = 0;
 let simulationCount = 0;
 
-/* ---------- RISK GAUGE ---------- */
+/* ---------- 2. THEME TOGGLE LOGIC ---------- */
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const body = document.body;
+
+// Check for saved theme
+if (localStorage.getItem('theme') === 'light') {
+  enableLightMode();
+}
+
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light-mode')) {
+    enableDarkMode();
+  } else {
+    enableLightMode();
+  }
+});
+
+function enableLightMode() {
+  body.classList.add('light-mode');
+  themeIcon.textContent = '☀️';
+  localStorage.setItem('theme', 'light');
+  updateGaugeBackground('#e2e8f0'); // Light grey background
+}
+
+function enableDarkMode() {
+  body.classList.remove('light-mode');
+  themeIcon.textContent = '🌙';
+  localStorage.setItem('theme', 'dark');
+  updateGaugeBackground('#1e293b'); // Dark blue-grey background
+}
+
+function updateGaugeBackground(color) {
+  if (riskGauge) {
+    riskGauge.data.datasets[0].backgroundColor[1] = color;
+    riskGauge.update();
+  }
+}
+
+/* ---------- 3. RISK GAUGE (CHART.JS) ---------- */
 const ctx = document.getElementById("riskGauge").getContext("2d");
 const riskGauge = new Chart(ctx, {
   type: "doughnut",
   data: {
     datasets: [{
       data: [0, 100],
-      backgroundColor: ["#22c55e", "#1e293b"],
+      backgroundColor: ["#22c55e", body.classList.contains('light-mode') ? "#e2e8f0" : "#1e293b"],
       borderWidth: 0
     }]
   },
@@ -61,7 +103,7 @@ function updateGauge(risk) {
   textEl.style.color = color;
 }
 
-/* ---------- DEVICE TABLE ---------- */
+/* ---------- 4. DASHBOARD RENDERERS ---------- */
 function renderDevices() {
   const table = document.getElementById("deviceTable");
   table.innerHTML = "";
@@ -75,7 +117,6 @@ function renderDevices() {
   });
 }
 
-/* ---------- HELPERS ---------- */
 function addLog(message) {
   const logStream = document.getElementById("logStream");
   const li = document.createElement("li");
@@ -97,19 +138,22 @@ function updateMetrics(detectTime, containTime) {
   document.getElementById("mttc").textContent = (totalContainTime / simulationCount).toFixed(1);
 }
 
-/* ---------- MAIN SIMULATION ---------- */
+/* ---------- 5. ATTACK SIMULATION ENGINE ---------- */
 function simulateAttack() {
+  // Reset logs and select random threat
   document.getElementById("logStream").innerHTML = "";
   const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
   threatCounter++;
   document.getElementById("threatCount").textContent = threatCounter;
 
+  // Generate random performance metrics
   const detectTime = parseFloat((Math.random() * 2 + 1).toFixed(1));
   const containTime = parseFloat((Math.random() * 2 + 3).toFixed(1));
 
   let step = 1;
   const pipelineSteps = ["step1","step2","step3","step4","step5","step6"];
 
+  // Visual Pipeline Animation
   const interval = setInterval(() => {
     if (step <= pipelineSteps.length) {
       activateStep(pipelineSteps[step - 1]);
@@ -124,21 +168,26 @@ function simulateAttack() {
 
 function finishSimulation(scenario, detectTime, containTime) {
   activateStep("step7");
+  
+  // Update UI Status Labels
   const riskLabel = document.getElementById("riskLevel");
   riskLabel.textContent = scenario.risk;
   riskLabel.className = `value status-text ${scenario.risk.toLowerCase()}`;
   
+  // Update Analytics
   updateGauge(scenario.risk);
   updateMetrics(detectTime, containTime);
 
+  // Update Table Data
   devices.forEach(d => { if (d.device === scenario.device) d.status = scenario.risk; });
   renderDevices();
 
+  // Populate Incident Panel
   const actions = scenario.actions.map(a => `<li>✅ ${a}</li>`).join("");
   document.getElementById("incidentBox").innerHTML = `
     <div style="border-left: 4px solid var(--danger); padding-left: 10px;">
-      <p><strong>Incident:</strong> ${scenario.name}</p>
-      <p><strong>Source:</strong> ${scenario.device}</p>
+      <p style="margin: 0;"><strong>Incident:</strong> ${scenario.name}</p>
+      <p style="margin: 5px 0;"><strong>Source:</strong> ${scenario.device}</p>
       <ul style="padding-left: 20px; margin: 10px 0;">${actions}</ul>
     </div>
   `;
