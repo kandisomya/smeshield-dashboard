@@ -6,6 +6,7 @@
   <title>SME Shield Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  
 </head>
 <body>
 
@@ -20,6 +21,17 @@
         Simulate Attack
       </button>
     </div>
+    
+    <div class="actions">
+      <button id="theme-toggle" class="btn-secondary" style="margin-right: 10px; background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 10px; border-radius: 8px; cursor: pointer;">
+        <span id="theme-icon">🌙</span>
+      </button>
+  
+      <button class="btn-primary" onclick="simulateAttack()">
+        Simulate Attack
+      </button>
+    </div>
+
   </header>
 
   <main class="dashboard-grid">
